@@ -2,7 +2,7 @@ version: "3"
 
 services:
   app:
-    image: ros-melodic-with-camlasercalibration:latest
+    image: ros-melodic-with-calibration-and-rosbags:latest
     build: .
     stdin_open: true # docker run -i
     tty: true        # docker run -t
