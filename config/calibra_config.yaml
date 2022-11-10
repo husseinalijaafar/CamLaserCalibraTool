@@ -2,7 +2,7 @@
 
 #common parameters
 savePath: "/root/LaserCameraCal_ws/src/CamLaserCalibraTool/logs/"
-bag_path: "/root/LaserCameraCal_ws/src/CamLaserCalibraTool/rosbags/converted_all_sensors_no_exposure_v2.bag"
+bag_path: "/root/LaserCameraCal_ws/src/CamLaserCalibraTool/rosbags/burger_09.bag"
 
 scan_topic_name: "/scan"
 img_topic_name: "/camera/color/image_raw"

@@ -6,8 +6,10 @@ services:
     build: .
     stdin_open: true # docker run -i
     tty: true        # docker run -t
+    privileged: true
     environment:
       - DISPLAY=${DISPLAY}
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - ../rosbags:/root/LaserCameraCal_ws/src/CamLaserCalibraTool/rosbags/
     network_mode: host
