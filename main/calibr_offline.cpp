@@ -94,8 +94,8 @@ int main(int argc, char **argv){
       double timestamp = scan->header.stamp.toSec();
       std::vector<Eigen::Vector3d> points;
       std::cout << "offline: Points size" << Points.size() << std::endl;
-      points = AutoGetLinePts(Points);
-      // TODO: point size is 0 for some reason
+      points = AutoGetLinePts(Points); // TODO: problem is here
+      // TODO: Point size is 0 for some reason
       std::cout << "offline: points size" << points.size() << std::endl;
       // 检测到了直线
       if(points.size() > 0)

@@ -57,8 +57,8 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
 
     // 逻辑别搞复杂了。
     std::vector<LineSeg> segs;
-    double dist_thre = 0.05;
-    int skip = 3;
+    double dist_thre = 0.1; // increase threshold from 0.05
+    int skip = 3; // decrease from 3 to 2
     int currentPt = id_right;
     int nextPt = currentPt + skip;
     bool newSeg = true;
@@ -75,7 +75,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
         double d1 = points.at(currentPt).head(2).norm();
         double d2 = points.at(nextPt).head(2).norm();
         double range_max = 100;
-        if(d1 < range_max && d2 < range_max)    // 有效数据,  激光小于 100 m
+        if(d1 < range_max && d2 < range_max)    // 有效数据,  激光小于 100 m, valid data, laser less than 100 m
         {
             if(fabs(d1-d2) < dist_thre)  //  8cm
             {
