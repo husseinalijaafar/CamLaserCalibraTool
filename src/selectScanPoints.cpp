@@ -14,6 +14,9 @@ struct LineSeg
     double dist;
 };
 
+/**
+ * @brief FUnction seems to convert scan points to a line of points
+ */
 std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d> points, bool debug)
 {
 //    cv::Mat img(img_w, img_w, CV_8UC1, cv::Scalar::all(0));
@@ -33,12 +36,18 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
 
     /// detect and get line
     // 直接从每一帧激光的正前方开始搜索一定距离范围内的符合平面标定板形状的激光线段
+    // Search for the laser line segment within a certain distance that conforms to the shape of the
+    // plane calibration plate directly from the front of each frame of the laser
     int n = points.size();
     int id = n/2;
 //        std::cout << points.at(id).transpose() <<" "<<points.at(id+1).transpose() <<std::endl;
     // 假设每个激光点之间的夹角为0.3deg,
     // step 1: 如果有激光标定板，那么激光标定板必须出现在视野的正前方 120 deg 范围内(通常相机视野也只有 120 deg)，也就是左右各 60deg.
-    int delta = 80/0.3;
+    // Assume the angle between each laser point is 0.3deg,
+     // step 1: If there is a laser calibration board, 
+     //then the laser calibration board must appear within 120 deg in front of the field of view 
+     //(usually the camera field of view is only 120 deg), that is, 60deg on the left and right.
+    int delta = 80/1; //TODO: the angle between measurements is actually 1 deg not 0.3 deg
 
     int id_left = std::min( id + delta, n-1);
     int id_right = std::max( id - delta , 0);
@@ -99,7 +108,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
     }
 
 
-    // 对 segs 的边界进行扩充
+    // 对 right segs 的边界进行扩充
     for (int i = 0; i < segs.size(); ++i) {
         LineSeg tmp = segs.at(i);
 
