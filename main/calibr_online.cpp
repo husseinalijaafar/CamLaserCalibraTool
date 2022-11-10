@@ -210,6 +210,7 @@ int main(int argc, char **argv){
       std::vector<Eigen::Vector3d> points;
 
       points = AutoGetLinePts(Points);
+      std::cout << "online: points size" << points.size() << std::endl;
 
       // 检测到了直线
       if(points.size() > 15) // TODO: Change this to less, to be able to identify the observation

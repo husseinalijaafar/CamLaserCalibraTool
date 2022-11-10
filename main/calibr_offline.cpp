@@ -95,7 +95,7 @@ int main(int argc, char **argv){
       std::vector<Eigen::Vector3d> points;
 
       points = AutoGetLinePts(Points);
-
+      std::cout << "offline: points size" << points.size() << std::endl;
       // 检测到了直线
       if(points.size() > 0)
       {
