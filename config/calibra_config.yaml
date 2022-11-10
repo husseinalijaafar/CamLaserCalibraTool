@@ -1,7 +1,7 @@
 %YAML:1.0
 
 #common parameters
-savePath: "/root/LaserCamCal_ws/src/log/"
+savePath: "/root/LaserCameraCal_ws/src/CamLaserCalibraTool/logs/"
 bag_path: "/root/LaserCameraCal_ws/src/CamLaserCalibraTool/rosbags/converted_all_sensors_no_exposure_v2.bag"
 
 scan_topic_name: "/scan"
