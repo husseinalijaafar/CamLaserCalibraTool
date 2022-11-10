@@ -212,7 +212,7 @@ int main(int argc, char **argv){
       points = AutoGetLinePts(Points);
 
       // 检测到了直线
-      if(points.size() > 30)
+      if(points.size() > 15) // TODO: Change this to less, to be able to identify the observation
       {
         // 在 camera 里找时间戳最近的一个 pose
         double min_dt = 10000;

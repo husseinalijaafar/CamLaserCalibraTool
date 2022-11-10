@@ -12,4 +12,5 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ../rosbags:/root/LaserCameraCal_ws/src/CamLaserCalibraTool/rosbags/
+      - ../logs:/root/LaserCameraCal_ws/src/CamLaserCalibraTool/logs/
     network_mode: host
