@@ -5,7 +5,7 @@
 
 int img_w = 608;
 double focal = 450;
-double z = 10;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
+double z = 1;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
 
 struct LineSeg
 {
@@ -21,9 +21,9 @@ struct LineSeg
  */
 std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d> points, bool debug)
 {
+    // Parses each 
 //    cv::Mat img(img_w, img_w, CV_8UC1, cv::Scalar::all(0));
     cv::Mat img(img_w, img_w, CV_8UC3, cv::Scalar(0,0,0)); // CV_8UC3 is rgb image
-// TODO: PROBLEM IS HERE V V V 
     for (auto pt: points) { // loops through all Points passed, as pt 
         std::cout << "Pt loop: x " << pt.x() << " y " << pt.y() <<  std::endl;
         int col = (int)(pt.x() / z * focal + img_w/2);
@@ -32,8 +32,9 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
         if(col > img_w-1 || col< 0 || row > img_w-1 || row < 0)
             continue;
 
-        cv::Vec3b color_value(255,0,0);
-        img.at<cv::Vec3b>(row, col) = color_value;
+        std::cout << "past continue" <, std::endl;
+        cv::Vec3b color_value(255,0,0); // RED
+        img.at<cv::Vec3b>(row, col) = color_value; // img at that point = red 
 //        img.at<uchar>(row, col) = 255;
     }
 
@@ -173,7 +174,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
                 if(col > img_w-1 || col< 0 || row > img_w-1 || row < 0)
                     continue;
 
-                cv::Vec3b color_value(0,255,0);
+                cv::Vec3b color_value(0,255,0); // green
                 img.at<cv::Vec3b>(row, col) = color_value;
             }
         }
@@ -187,7 +188,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
             if(col > img_w-1 || col< 0 || row > img_w-1 || row < 0)
                 continue;
 
-            cv::Vec3b color_value(0,0,200);
+            cv::Vec3b color_value(0,0,200);  // blue
             img.at<cv::Vec3b>(row, col) = color_value;
 
         }
