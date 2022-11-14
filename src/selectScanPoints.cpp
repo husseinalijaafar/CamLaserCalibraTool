@@ -25,7 +25,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
     cv::Mat img(img_w, img_w, CV_8UC3, cv::Scalar(0,0,0)); // CV_8UC3 is rgb image
 // TODO: PROBLEM IS HERE V V V 
     for (auto pt: points) { // loops through all Points passed, as pt 
-        std::cout << "Pt loop:" << pt.data() << std::endl;
+        std::cout << "Pt loop: x" << pt.x() << "y" << pt.y() <<  std::endl;
         int col = (int)(pt.x() / z * focal + img_w/2);
         int row = (int)(- pt.y() / z * focal + img_w/2);  // -Y/Z 加了一个负号, 是为了抵消针孔投影时的倒影效果
 
