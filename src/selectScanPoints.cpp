@@ -43,7 +43,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
     // Search for the laser line segment within a certain distance that conforms to the shape of the
     // plane calibration plate directly from the front of each frame of the laser
     int n = points.size(); // 360
-    std::cout << "n" << n << std::endl;
+    // std::cout << "n" << n << std::endl;
     int id = n/2; // 180
     //    std::cout << points.at(id).transpose() <<" "<<points.at(id+1).transpose() <<std::endl;
     // 假设每个激光点之间的夹角为0.3deg,
@@ -73,7 +73,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
     };
     */
 
-    double dist_thre = 0.1; // 
+    double dist_thre = 0.5; // 
     int skip = 3; // decrease from 3 to 2
     int currentPt = id_right;
     int nextPt = currentPt + skip; 
@@ -127,7 +127,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
         }
     }
 
-
+    std::cout <<"segs size: "<< segs.size() << std::endl;
     // 对 right segs 的边界进行扩充
     for (int i = 0; i < segs.size(); ++i) {
         LineSeg tmp = segs.at(i);
