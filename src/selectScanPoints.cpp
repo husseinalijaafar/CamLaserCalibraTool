@@ -97,8 +97,10 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
             {
                 seg.id_end = nextPt; // keep extending the line segment, until it is too big, and you need to cap it
                 std::cout << "seg extended" << std::endl;
+                // ? Segment _is_ getting extended 
             } else
             {   // once line segment reaches threshold, you cap it, and ensure that it is valid
+                std::cout << "seg threshold limit is reached" << std::endl;
                 newSeg = true;
                 Eigen::Vector3d dist = points.at(seg.id_start) - points.at(seg.id_end);
                 if(dist.head(2).norm() > 0.2 // TODO: try changing this to make it more permissive
