@@ -25,14 +25,14 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
 //    cv::Mat img(img_w, img_w, CV_8UC1, cv::Scalar::all(0));
     cv::Mat img(img_w, img_w, CV_8UC3, cv::Scalar(0,0,0)); // CV_8UC3 is rgb image
     for (auto pt: points) { // loops through all Points passed, as pt 
-        std::cout << "Pt loop: x " << pt.x() << " y " << pt.y() <<  std::endl;
+        // std::cout << "Pt loop: x " << pt.x() << " y " << pt.y() <<  std::endl;
         int col = (int)(pt.x() / z * focal + img_w/2);
         int row = (int)(- pt.y() / z * focal + img_w/2);  // -Y/Z 加了一个负号, 是为了抵消针孔投影时的倒影效果
 
         if(col > img_w-1 || col< 0 || row > img_w-1 || row < 0)
             continue;
-        std::cout << "col: " << col << " row: " << row << std::endl;
-        std::cout << "past continue" << std::endl;
+        // std::cout << "col: " << col << " row: " << row << std::endl;
+        // std::cout << "past continue" << std::endl;
         cv::Vec3b color_value(255,0,0); // RED
         img.at<cv::Vec3b>(row, col) = color_value; // img at that point = red 
 //        img.at<uchar>(row, col) = 255;
