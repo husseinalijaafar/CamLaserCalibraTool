@@ -32,7 +32,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
         if(col > img_w-1 || col< 0 || row > img_w-1 || row < 0)
             continue;
 
-        std::cout << "past continue" <, std::endl;
+        std::cout << "past continue" < std::endl;
         cv::Vec3b color_value(255,0,0); // RED
         img.at<cv::Vec3b>(row, col) = color_value; // img at that point = red 
 //        img.at<uchar>(row, col) = 255;
