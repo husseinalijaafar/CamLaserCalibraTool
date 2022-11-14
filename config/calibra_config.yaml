@@ -9,8 +9,8 @@ img_topic_name: "/camera/color/image_raw"
 
 # tag info
 tag_type: 1 # 1: kalibr_tag, 2: apriltag
-tag_size: 0.031 # tag size, unit meter
-tag_spacing: 0.29 # tag spacing, only used in kalibr_tag. For details, please see kalibr tag description.
+tag_size: 0.088 # tag size, unit meter
+tag_spacing: 0.3 # tag spacing, only used in kalibr_tag. For details, please see kalibr tag description.
 black_border: 2 # if you use kalibr_tag black_boarder = 2; if you use apriltag black_boarder = 1
 
 #camera calibration 
