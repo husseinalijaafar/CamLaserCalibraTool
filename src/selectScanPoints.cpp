@@ -42,9 +42,9 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
     // 直接从每一帧激光的正前方开始搜索一定距离范围内的符合平面标定板形状的激光线段
     // Search for the laser line segment within a certain distance that conforms to the shape of the
     // plane calibration plate directly from the front of each frame of the laser
-    int n = points.size();
+    int n = points.size(); // 360
     std::cout << "n" << n << std::endl;
-    int id = n/2;
+    int id = n/2; // 180
     //    std::cout << points.at(id).transpose() <<" "<<points.at(id+1).transpose() <<std::endl;
     // 假设每个激光点之间的夹角为0.3deg,
     // step 1: 如果有激光标定板，那么激光标定板必须出现在视野的正前方 120 deg 范围内(通常相机视野也只有 120 deg)，也就是左右各 60deg.
@@ -52,22 +52,33 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
      // step 1: If there is a laser calibration board, 
      //then the laser calibration board must appear within 120 deg in front of the field of view 
      //(usually the camera field of view is only 120 deg), that is, 60deg on the left and right.
-    int delta = 80/0.3; //TODO: the angle between measurements is actually 1 deg not 0.3 deg
-
+    int delta = 80/1; //TODO: the angle between measurements is actually 1 deg not 0.3 deg
+    // id + delta = 260
+    // id - delta = 100
     int id_left = std::min( id + delta, n-1);
     int id_right = std::max( id - delta , 0);
 
-    int dist_left = points.at(id_left).norm();
-    int dist_right = points.at(id_right).norm();
+    int dist_left = points.at(id_left).norm(); // distance to point left of current point 
+    int dist_right = points.at(id_right).norm(); // distance to point right of current point
 
     // 逻辑别搞复杂了。
-    std::vector<LineSeg> segs;
-    double dist_thre = 0.05; // increase threshold from 0.05
+    std::vector<LineSeg> segs; // create a vector of line segments
+    // line segments have the structure
+    /*
+    struct LineSeg
+    {
+    int id_start;
+    int id_end;
+    double dist;
+    };
+    */
+
+    double dist_thre = 0.1; // 
     int skip = 3; // decrease from 3 to 2
     int currentPt = id_right;
-    int nextPt = currentPt + skip;
+    int nextPt = currentPt + skip; 
     bool newSeg = true;
-    LineSeg seg;
+    LineSeg seg; // create single line segment
     for (int i = id_right; i < id_left - skip; i += skip) {
 
         if(newSeg)
@@ -77,30 +88,34 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
             newSeg = false;
         }
 
-        double d1 = points.at(currentPt).head(2).norm();
-        double d2 = points.at(nextPt).head(2).norm();
+        double d1 = points.at(currentPt).head(2).norm(); // d1 = norm of first two elements of current point value 
+        double d2 = points.at(nextPt).head(2).norm(); // d2 = norm of first two elements of current point value 
         double range_max = 100;
         if(d1 < range_max && d2 < range_max)    // 有效数据,  激光小于 100 m, valid data, laser less than 100 m
         {
-            if(fabs(d1-d2) < dist_thre)  //  8cm
+            if(fabs(d1-d2) < dist_thre)  //  8cm // if the difference between the points is less than the distance threshold, you keep extending the line
             {
-                seg.id_end = nextPt;
-
+                seg.id_end = nextPt; // keep extending the line segment, until it is too big, and you need to cap it
             } else
-            {
+            {   // once line segment reaches threshold, you cap it, and ensure that it is valid
                 newSeg = true;
                 Eigen::Vector3d dist = points.at(seg.id_start) - points.at(seg.id_end);
-                if(dist.head(2).norm() > 0.2 // TODO: try changing this
+                if(dist.head(2).norm() > 0.2 // TODO: try changing this to make it more permissive
                    && points.at(seg.id_start).head(2).norm() < 2
                    && points.at(seg.id_end).head(2).norm() < 2
                    && seg.id_end-seg.id_start > 50   )  // 至少长于 20 cm, 标定板不能距离激光超过2m, 标定板上的激光点肯定多余 50 个
+                   /*
+                    At least longer than 20 cm, the calibration plate cannot be more than 2m
+                    away from the laser, and there must be more than 50 laser points on the 
+                    calibration plate
+                   */
                 {
                     seg.dist = dist.head(2).norm();
-                    segs.push_back(seg);
+                    segs.push_back(seg); // save the segment
                 }
             }
 
-            currentPt = nextPt;        // 下一个点
+            currentPt = nextPt;        // next point
             nextPt = nextPt + skip;
         } else
         {
