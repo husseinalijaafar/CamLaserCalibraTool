@@ -3,7 +3,7 @@
 //
 #include "selectScanPoints.h"
 
-int img_w = 720;
+int img_w = 608;
 double focal = 450;
 double z = 10;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
 
@@ -16,11 +16,13 @@ struct LineSeg
 
 /**
  * @brief FUnction seems to convert scan points to a line of points
+ * @param points: a vector of x, y, and distance values
+ * @param debug: boolean if it is debug mode or not
  */
 std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d> points, bool debug)
 {
 //    cv::Mat img(img_w, img_w, CV_8UC1, cv::Scalar::all(0));
-    cv::Mat img(img_w, img_w, CV_8UC3, cv::Scalar(0,0,0));
+    cv::Mat img(img_w, img_w, CV_8UC3, cv::Scalar(0,0,0)); // CV_8UC3 is rgb image
 
     for (auto pt: points) {
         int col = (int)(pt.x() / z * focal + img_w/2);
@@ -40,7 +42,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
     // plane calibration plate directly from the front of each frame of the laser
     int n = points.size();
     int id = n/2;
-//        std::cout << points.at(id).transpose() <<" "<<points.at(id+1).transpose() <<std::endl;
+    //    std::cout << points.at(id).transpose() <<" "<<points.at(id+1).transpose() <<std::endl;
     // 假设每个激光点之间的夹角为0.3deg,
     // step 1: 如果有激光标定板，那么激光标定板必须出现在视野的正前方 120 deg 范围内(通常相机视野也只有 120 deg)，也就是左右各 60deg.
     // Assume the angle between each laser point is 0.3deg,
