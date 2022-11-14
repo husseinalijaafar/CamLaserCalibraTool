@@ -5,7 +5,7 @@
 
 int img_w = 608;
 double focal = 450;
-double z = 10;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
+double z = 15;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
 
 struct LineSeg
 {
@@ -52,7 +52,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
      // step 1: If there is a laser calibration board, 
      //then the laser calibration board must appear within 120 deg in front of the field of view 
      //(usually the camera field of view is only 120 deg), that is, 60deg on the left and right.
-    int delta = 80/1; //TODO: the angle between measurements is actually 1 deg not 0.3 deg
+    int delta = 80/0.3; //TODO: the angle between measurements is actually 1 deg not 0.3 deg
 
     int id_left = std::min( id + delta, n-1);
     int id_right = std::max( id - delta , 0);
@@ -62,7 +62,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
 
     // 逻辑别搞复杂了。
     std::vector<LineSeg> segs;
-    double dist_thre = 0.1; // increase threshold from 0.05
+    double dist_thre = 0.05; // increase threshold from 0.05
     int skip = 3; // decrease from 3 to 2
     int currentPt = id_right;
     int nextPt = currentPt + skip;
@@ -90,7 +90,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
             {
                 newSeg = true;
                 Eigen::Vector3d dist = points.at(seg.id_start) - points.at(seg.id_end);
-                if(dist.head(2).norm() > 0.2
+                if(dist.head(2).norm() > 0.2 // TODO: try changing this
                    && points.at(seg.id_start).head(2).norm() < 2
                    && points.at(seg.id_end).head(2).norm() < 2
                    && seg.id_end-seg.id_start > 50   )  // 至少长于 20 cm, 标定板不能距离激光超过2m, 标定板上的激光点肯定多余 50 个
