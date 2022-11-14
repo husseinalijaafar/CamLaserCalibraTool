@@ -96,6 +96,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
             if(fabs(d1-d2) < dist_thre)  //  8cm // if the difference between the points is less than the distance threshold, you keep extending the line
             {
                 seg.id_end = nextPt; // keep extending the line segment, until it is too big, and you need to cap it
+                std::cout << "seg extended" << std::endl;
             } else
             {   // once line segment reaches threshold, you cap it, and ensure that it is valid
                 newSeg = true;
@@ -111,6 +112,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
                    */
                 {
                     // ! Error is here I believe 
+                    // ! Seg is never pushed back
                     std::cout << "seg is pushed back" << std::endl;
                     seg.dist = dist.head(2).norm();
                     segs.push_back(seg); // save the segment // never happening 
