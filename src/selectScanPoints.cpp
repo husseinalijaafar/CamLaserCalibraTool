@@ -100,13 +100,14 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
                 // ? Segment _is_ getting extended 
             } else
             {   // once line segment reaches threshold, you cap it, and ensure that it is valid
-                std::cout << "seg threshold limit is reached" << std::endl;
+                std::cout << "seg threshold limit is reached" << std::endl; 
+                // ? Yes the seg threshold is reached
                 newSeg = true;
                 Eigen::Vector3d dist = points.at(seg.id_start) - points.at(seg.id_end);
                 if(dist.head(2).norm() > 0.2 // TODO: try changing this to make it more permissive
                    && points.at(seg.id_start).head(2).norm() < 2
                    && points.at(seg.id_end).head(2).norm() < 2
-                   && seg.id_end-seg.id_start > 50   )  // 至少长于 20 cm, 标定板不能距离激光超过2m, 标定板上的激光点肯定多余 50 个
+                   && seg.id_end-seg.id_start > 30   )  // 至少长于 20 cm, 标定板不能距离激光超过2m, 标定板上的激光点肯定多余 50 个
                    /*
                     At least longer than 20 cm, the calibration plate cannot be more than 2m
                     away from the laser, and there must be more than 50 laser points on the 
