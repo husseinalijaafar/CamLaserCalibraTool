@@ -110,8 +110,10 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
                     calibration plate
                    */
                 {
+                    // ! Error is here I believe 
+                    std::cout << "seg is pushed back" << std::endl;
                     seg.dist = dist.head(2).norm();
-                    segs.push_back(seg); // save the segment
+                    segs.push_back(seg); // save the segment // never happening 
                 }
             }
 
@@ -126,7 +128,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
             nextPt = nextPt + skip;
         }
     }
-
+    // ? Error is here 
     std::cout <<"segs size: "<< segs.size() << std::endl;
     // 对 right segs 的边界进行扩充
     for (int i = 0; i < segs.size(); ++i) {
