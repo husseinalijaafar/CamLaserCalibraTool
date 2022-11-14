@@ -5,7 +5,7 @@
 
 int img_w = 608;
 double focal = 450;
-double z = 15;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
+double z = 10;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
 
 struct LineSeg
 {
@@ -73,8 +73,8 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
     };
     */
 
-    double dist_thre = 0.5; // 
-    int skip = 3; // decrease from 3 to 2
+    double dist_thre = 0.7; // 
+    int skip = 2; // decrease from 3 to 2
     int currentPt = id_right;
     int nextPt = currentPt + skip; 
     bool newSeg = true;
@@ -104,10 +104,10 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
                 // ? Yes the seg threshold is reached
                 newSeg = true;
                 Eigen::Vector3d dist = points.at(seg.id_start) - points.at(seg.id_end);
-                if(dist.head(2).norm() > 0.2 // TODO: try changing this to make it more permissive
+                if(dist.head(2).norm() > 0.15 // TODO: try changing this to make it more permissive
                    && points.at(seg.id_start).head(2).norm() < 2
                    && points.at(seg.id_end).head(2).norm() < 2
-                   && seg.id_end-seg.id_start > 35   )  // 至少长于 20 cm, 标定板不能距离激光超过2m, 标定板上的激光点肯定多余 50 个
+                   && seg.id_end-seg.id_start > 30   )  // 至少长于 20 cm, 标定板不能距离激光超过2m, 标定板上的激光点肯定多余 50 个
                    /*
                     At least longer than 20 cm, the calibration plate cannot be more than 2m
                     away from the laser, and there must be more than 50 laser points on the 
