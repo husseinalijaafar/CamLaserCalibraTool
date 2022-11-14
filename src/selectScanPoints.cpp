@@ -5,7 +5,7 @@
 
 int img_w = 608;
 double focal = 450;
-double z = 100;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
+double z = 10;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
 
 struct LineSeg
 {
@@ -31,7 +31,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
 
         if(col > img_w-1 || col< 0 || row > img_w-1 || row < 0)
             continue;
-
+        std::cout << "col: " << col << " row: " << row << std::endl;
         std::cout << "past continue" << std::endl;
         cv::Vec3b color_value(255,0,0); // RED
         img.at<cv::Vec3b>(row, col) = color_value; // img at that point = red 
