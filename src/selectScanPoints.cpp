@@ -25,7 +25,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
     cv::Mat img(img_w, img_w, CV_8UC3, cv::Scalar(0,0,0)); // CV_8UC3 is rgb image
 // TODO: PROBLEM IS HERE V V V 
     for (auto pt: points) { // loops through all Points passed, as pt 
-        std::cout << "Pt loop: x" << pt.x() << "y" << pt.y() <<  std::endl;
+        std::cout << "Pt loop: x " << pt.x() << " y " << pt.y() <<  std::endl;
         int col = (int)(pt.x() / z * focal + img_w/2);
         int row = (int)(- pt.y() / z * focal + img_w/2);  // -Y/Z 加了一个负号, 是为了抵消针孔投影时的倒影效果
 
@@ -42,6 +42,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
     // Search for the laser line segment within a certain distance that conforms to the shape of the
     // plane calibration plate directly from the front of each frame of the laser
     int n = points.size();
+    std::cout << "n" << n << std::endl;
     int id = n/2;
     //    std::cout << points.at(id).transpose() <<" "<<points.at(id+1).transpose() <<std::endl;
     // 假设每个激光点之间的夹角为0.3deg,
