@@ -5,7 +5,7 @@
 
 int img_w = 608;
 double focal = 450;
-double z = 20;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
+double z = 100;    // 在 10m 高处装一个相机，咔咔给激光点云拍照
 
 struct LineSeg
 {
