@@ -1,0 +1,30 @@
+source /ros_entrypoint.sh &&
+cd ~/LaserCameraCal_ws/ &&
+source devel/setup.bash
+
+# running poses
+source /ros_entrypoint.sh &&
+cd ~/LaserCameraCal_ws/ &&
+catkin_make -DCMAKE_BUILD_TYPE=Release &&
+source devel/setup.bash &&
+roslaunch lasercamcal_ros kalibra_apriltag.launch 
+
+
+# running scan
+source /ros_entrypoint.sh &&
+cd ~/LaserCameraCal_ws/ &&
+catkin_make -DCMAKE_BUILD_TYPE=Release &&
+source devel/setup.bash &&
+roslaunch lasercamcal_ros calibra_offline.launch 
+
+
+cd ~/LaserCameraCal_ws &&
+source devel/setup.bash && 
+roslaunch lasercamcal_ros calibra_offline.launch 
+
+## Copying rosbags
+scp -r ubuntu@192.168.0.102:/home/ubuntu/rosbags/burger_09 /home/hussein/projects/CamLaserCalibraTool/rosbags/ &&
+cd /home/hussein/projects/CamLaserCalibraTool/rosbags &&
+rosbags-convert burger_09 --dst ./burger_09.bag
+
+

@@ -73,8 +73,8 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
     };
     */
 
-    double dist_thre = 0.7; // 
-    int skip = 2; // decrease from 3 to 2
+    double dist_thre = 0.8; // 
+    int skip = 1; // decrease from 3 to 2
     int currentPt = id_right;
     int nextPt = currentPt + skip; 
     bool newSeg = true;
@@ -88,26 +88,26 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
             newSeg = false;
         }
 
-        double d1 = points.at(currentPt).head(2).norm(); // d1 = norm of first two elements of current point value 
-        double d2 = points.at(nextPt).head(2).norm(); // d2 = norm of first two elements of current point value 
+        double d1 = points.at(currentPt).head(2).norm(); // d1 = distance to current pt
+        double d2 = points.at(nextPt).head(2).norm(); // d2 = distance to next point
         double range_max = 100;
-        if(d1 < range_max && d2 < range_max)    // 有效数据,  激光小于 100 m, valid data, laser less than 100 m
+        if(d1 < range_max && d2 < range_max)    // if distances are less than max distance
         {
-            if(fabs(d1-d2) < dist_thre)  //  8cm // if the difference between the points is less than the distance threshold, you keep extending the line
+            if(fabs(d1-d2) < dist_thre)  //  8cm // if the difference between the points is less than the distance threshold, you move to next point
             {
-                seg.id_end = nextPt; // keep extending the line segment, until it is too big, and you need to cap it
+                seg.id_end = nextPt; 
                 std::cout << "seg extended" << std::endl;
                 // ? Segment _is_ getting extended 
             } else
-            {   // once line segment reaches threshold, you cap it, and ensure that it is valid
-                std::cout << "seg threshold limit is reached" << std::endl; 
+            {   // if the diff in distance between points is too big (i.e scan leaves board), you evaluate  the segment 
+                // std::cout << "seg threshold limit is reached" << std::endl; 
                 // ? Yes the seg threshold is reached
                 newSeg = true;
-                Eigen::Vector3d dist = points.at(seg.id_start) - points.at(seg.id_end);
-                if(dist.head(2).norm() > 0.15 // TODO: try changing this to make it more permissive
-                   && points.at(seg.id_start).head(2).norm() < 2
-                   && points.at(seg.id_end).head(2).norm() < 2
-                   && seg.id_end-seg.id_start > 30   )  // 至少长于 20 cm, 标定板不能距离激光超过2m, 标定板上的激光点肯定多余 50 个
+                Eigen::Vector3d dist = points.at(seg.id_start) - points.at(seg.id_end); // vector representing segment length
+                if(dist.head(2).norm() > 0.3 // * length of line segment 
+                   && points.at(seg.id_start).head(2).norm() < 3 // * line segment start cannot be farther than 2m
+                   && points.at(seg.id_end).head(2).norm() < 3 //* line segment end cannot be farther than 2m
+                   && seg.id_end-seg.id_start > 30   )  // * line segment should have at least 30 points
                    /*
                     At least longer than 20 cm, the calibration plate cannot be more than 2m
                     away from the laser, and there must be more than 50 laser points on the 
@@ -116,7 +116,7 @@ std::vector< Eigen::Vector3d > AutoGetLinePts(const std::vector<Eigen::Vector3d>
                 {
                     // ! Error is here I believe 
                     // ! Seg is never pushed back
-                    std::cout << "seg is pushed back" << std::endl;
+                    std::cout << "seg is established !!!! !!!! !!!!" << std::endl;
                     seg.dist = dist.head(2).norm();
                     segs.push_back(seg); // save the segment // never happening 
                 }
