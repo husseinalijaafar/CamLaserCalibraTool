@@ -19,7 +19,7 @@ struct Oberserve
 
     Eigen::Quaterniond tagPose_Qca;    // 该时刻 tag 的姿态
     Eigen::Vector3d tagPose_tca;
-    std::vector<Eigen::Vector3d> points;   // 该时刻激光点云的数据
+    std::vector<Eigen::Vector3d> points;   // 该时刻激光点云的数据 The data of the laser point cloud at this moment
     std::vector<Eigen::Vector3d> points_on_line;   // 该时刻激光点云的数据
 };
 
